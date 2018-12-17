@@ -1,7 +1,9 @@
 package com.mp.rena.myplaces;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,11 +38,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Intent intent = getIntent();
+        String lat = intent.getStringExtra("lat");
+        String lng = intent.getStringExtra("lng");
+
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng currentLoc = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        mMap.addMarker(new MarkerOptions().position(currentLoc).title("You are here"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc,10));
     }
 }
