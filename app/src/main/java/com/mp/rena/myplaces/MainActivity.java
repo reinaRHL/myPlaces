@@ -19,11 +19,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+
 public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private RecyclerView rv;
     Button searchBtn;
-
 
     public void getCurrentLocation(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
@@ -32,8 +32,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(Location location) {
                     if (location != null){
                         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                        intent.putExtra("lat", location.getLatitude()+"");
-                        intent.putExtra("lng", location.getLongitude()+"");
+                        String lat = location.getLatitude()+"";
+                        String lng = location.getLongitude()+"";
+                        Places place = new Places(lat,lng,"addresstest");
+
+                        Bundle extra = new Bundle();
+                        extra.putSerializable("place", place);
+                        intent.putExtras(extra);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(),"failed2",Toast.LENGTH_SHORT).show();
