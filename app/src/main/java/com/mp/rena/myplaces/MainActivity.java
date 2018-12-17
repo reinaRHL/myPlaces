@@ -15,12 +15,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        String[] data = new String[5];
 
+        String[] data = new String[5];
+        data[0] = "1";
+        data[1] = "2";
         rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(new MyAdapter(data));
+        rv.setAdapter(new MyAdapter(this, data));
 
 
     }
