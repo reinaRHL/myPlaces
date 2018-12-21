@@ -1,8 +1,12 @@
 package com.mp.rena.myplaces;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.GeolocationPermissions;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,7 +16,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -52,10 +59,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                String lat ="123";
-                String lng ="50";
-                String address = "Test Address";
-                Places place = new Places(lat,lng,address);
+                String lat = String.valueOf(latLng.latitude);
+                String lng = String.valueOf(latLng.longitude);
+                String address = "Not known";
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    address = addressList.get(0).getAddressLine(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Places place = new Places(lat, lng, address);
                 MainActivity.data.add(place);
                 MainActivity.adapter.notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
