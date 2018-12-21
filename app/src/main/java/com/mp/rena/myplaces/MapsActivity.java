@@ -48,5 +48,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng currentLoc = new LatLng(Double.parseDouble(place.lat), Double.parseDouble(place.lng));
         mMap.addMarker(new MarkerOptions().position(currentLoc).title("You are here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc,10));
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                String lat ="123";
+                String lng ="50";
+                String address = "Test Address";
+                Places place = new Places(lat,lng,address);
+                MainActivity.data.add(place);
+                MainActivity.adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

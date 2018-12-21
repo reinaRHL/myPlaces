@@ -19,11 +19,15 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private RecyclerView rv;
     Button searchBtn;
+    static ArrayList<Places> data = new ArrayList<>(); // arraylist containing Places objects
+    static MyAdapter adapter;
 
     public void getCurrentLocation(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
@@ -41,7 +45,14 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtras(extra);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getApplicationContext(),"failed2",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Failed to get last known location",Toast.LENGTH_SHORT).show();
+
+                        Places place = new Places("34","118","1313 Disneyland Dr, Anaheim, CA 92802, USA");
+                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                        Bundle extra = new Bundle();
+                        extra.putSerializable("place", place);
+                        intent.putExtras(extra);
+                        startActivity(intent);
                     }
                 }
             });
@@ -64,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         searchBtn = findViewById(R.id.searchPlaceBtn);
         mFusedLocationClient= LocationServices.getFusedLocationProviderClient(this);
 
-
         searchBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String[] data = new String[5];
-        data[0] = "1";
-        data[1] = "2";
         rv = findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(new MyAdapter(this, data));
+        adapter = new MyAdapter(this, data);
+        rv.setAdapter(adapter);
+
+
     }
 }
