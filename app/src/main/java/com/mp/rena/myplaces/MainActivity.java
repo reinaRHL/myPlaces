@@ -2,6 +2,8 @@ package com.mp.rena.myplaces;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -40,14 +42,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.deleteAllBtn){
-            data.clear();
-            adapter.notifyDataSetChanged();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Are you sure?")
+                    .setMessage("Everything in the list will be deleted and cannot be restored")
+                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            data.clear();
+                            adapter.notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton("no", null)
+                    .show();
         } else{
             // do nothing for now
         }
 
         return true;
-
     }
 
     private FusedLocationProviderClient mFusedLocationClient;
