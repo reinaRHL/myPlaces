@@ -1,5 +1,7 @@
 package com.mp.rena.myplaces;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,8 +43,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getFragmentManager().findFragmentById(R.id.searchAutoComplete);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
-                Log.i("testttt", "Place: " + place.getName());
+            public void onPlaceSelected(final Place place) {
+
+                new AlertDialog.Builder(MapsActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Save the place?")
+                        .setMessage("Save" + place.getName().toString() + "?")
+                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                LatLng latLng = place.getLatLng();
+                                String lat = String.valueOf(latLng.latitude);
+                                String lng = String.valueOf(latLng.longitude);
+                                String address = place.getName().toString();
+                                savePlace(lat, lng, address);
+                            }
+                        })
+                        .setNegativeButton("no", null)
+                        .show();
             }
 
             @Override
@@ -50,7 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("info", "An error occurred: " + status);
             }
         });
-
     }
 
 
@@ -87,13 +104,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                Places place = new Places(lat, lng, address);
-                MainActivity.data.add(place);
-                MainActivity.adapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
-
+                savePlace(lat, lng, address);
             }
         });
+    }
+
+    public void savePlace (String lat, String lng, String address) {
+        Places place = new Places(lat, lng, address);
+        MainActivity.data.add(place);
+        MainActivity.adapter.notifyDataSetChanged();
+        Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
     }
 }
