@@ -42,8 +42,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         holder.textView.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, place.lat,Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
                 Bundle extra = new Bundle();
                 extra.putSerializable("place", place);

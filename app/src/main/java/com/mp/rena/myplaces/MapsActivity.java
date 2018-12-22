@@ -8,7 +8,6 @@ import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.GeolocationPermissions;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -53,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 LatLng latLng = place.getLatLng();
+                                addMarker(latLng, "Selected Place");
                                 String lat = String.valueOf(latLng.latitude);
                                 String lng = String.valueOf(latLng.longitude);
                                 String address = place.getName().toString();
@@ -85,15 +85,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         Places place = (Places)intent.getSerializableExtra("place");
         mMap = googleMap;
-
+        mMap.clear();
         // Add a marker in Sydney and move the camera
         LatLng currentLoc = new LatLng(Double.parseDouble(place.lat), Double.parseDouble(place.lng));
-        mMap.addMarker(new MarkerOptions().position(currentLoc).title("You are here"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc,10));
+        addMarker(currentLoc, "You are here!");
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                addMarker(latLng, "Selected Place");
                 String lat = String.valueOf(latLng.latitude);
                 String lng = String.valueOf(latLng.longitude);
                 String address = "Not known";
@@ -114,5 +114,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MainActivity.data.add(place);
         MainActivity.adapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void addMarker (LatLng latLng, String title){
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
     }
 }
