@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -129,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdapter(this, data);
         rv.setAdapter(adapter);
+        DividerItemDecoration devider = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+        rv.addItemDecoration(devider);
 
 
     }
