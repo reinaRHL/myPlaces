@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -44,17 +45,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 final LatLng latLng = place.getLatLng();
                 addMarker(latLng, "Selected Place");
-
+                final EditText edittext = new EditText(getApplicationContext());
                 new AlertDialog.Builder(MapsActivity.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Save the place?")
-                        .setMessage("Save" + place.getName().toString() + "?")
+                        .setMessage("Save this place? It will be saved as " + place.getName().toString() + ". Please specify below if you want to save it as different name")
+                        .setView(edittext)
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String lat = String.valueOf(latLng.latitude);
                                 String lng = String.valueOf(latLng.longitude);
-                                String address = place.getName().toString();
+                                String address = "Not known";
+                                if (edittext.getText().toString() == ""){
+                                    address = place.getName().toString();
+                                } else {
+                                    address = edittext.getText().toString();
+                                }
                                 savePlace(lat, lng, address);
                             }
                         })
