@@ -21,8 +21,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +42,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onPlaceSelected(final Place place) {
 
+                final LatLng latLng = place.getLatLng();
+                addMarker(latLng, "Selected Place");
+
                 new AlertDialog.Builder(MapsActivity.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Save the place?")
@@ -51,8 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                LatLng latLng = place.getLatLng();
-                                addMarker(latLng, "Selected Place");
                                 String lat = String.valueOf(latLng.latitude);
                                 String lng = String.valueOf(latLng.longitude);
                                 String address = place.getName().toString();
