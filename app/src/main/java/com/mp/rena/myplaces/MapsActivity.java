@@ -3,6 +3,7 @@ package com.mp.rena.myplaces;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteStatement;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
@@ -119,7 +120,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Places place = new Places(lat, lng, address);
         MainActivity.data.add(place);
         MainActivity.adapter.notifyDataSetChanged();
-        MainActivity.db.execSQL("INSERT INTO Places (lat, lng, address) VALUES (\"test\", \"test\", \"test\")");
+        String insertStatement = "INSERT INTO Places (lat, lng, address) VALUES (?, ?, ?)";
+        SQLiteStatement statement = MainActivity.db.compileStatement(insertStatement);
+        statement.bindString(1, lat);
+        statement.bindString(2, lng);
+        statement.bindString(3, address);
+        statement.execute();
         Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
     }
 
