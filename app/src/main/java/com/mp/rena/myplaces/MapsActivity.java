@@ -120,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Places place = new Places(lat, lng, address);
         MainActivity.data.add(place);
         MainActivity.adapter.notifyDataSetChanged();
-        String insertStatement = "INSERT INTO Places (lat, lng, address) VALUES (?, ?, ?)";
+        String insertStatement = "INSERT INTO Place (lat, lng, address) VALUES (?, ?, ?)";
         SQLiteStatement statement = MainActivity.db.compileStatement(insertStatement);
         statement.bindString(1, lat);
         statement.bindString(2, lng);

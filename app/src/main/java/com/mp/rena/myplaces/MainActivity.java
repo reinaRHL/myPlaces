@@ -136,9 +136,9 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration divider = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         rv.addItemDecoration(divider);
 
-        db = this.openOrCreateDatabase("Places", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE if not exists Places (lat VARCHAR, lng VARCHAR, address VARCHAR)");
-        Cursor c = db.rawQuery("SELECT * FROM Places", null);
+        db = this.openOrCreateDatabase("Place", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE if not exists Place (placeID INTEGER PRIMARY KEY, lat VARCHAR, lng VARCHAR, address VARCHAR)");
+        Cursor c = db.rawQuery("SELECT * FROM Place", null);
         int latIndex = c.getColumnIndex("lat");
         int lngIndex = c.getColumnIndex("lng");
         int addIndex = c.getColumnIndex("address");
