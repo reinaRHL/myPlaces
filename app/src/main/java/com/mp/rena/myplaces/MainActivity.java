@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     Button searchBtn;
     static ArrayList<Places> data = new ArrayList<>(); // arraylist containing Places objects
     static MyAdapter adapter;
+    static SQLiteDatabase db;
 
     public void getCurrentLocation(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
@@ -130,8 +133,26 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdapter(this, data);
         rv.setAdapter(adapter);
-        DividerItemDecoration devider = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
-        rv.addItemDecoration(devider);
+        DividerItemDecoration divider = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+        rv.addItemDecoration(divider);
+
+        db = this.openOrCreateDatabase("Places", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE if not exists Places (lat VARCHAR, lng VARCHAR, address VARCHAR)");
+        Cursor c = db.rawQuery("SELECT * FROM Places", null);
+        int latIndex = c.getColumnIndex("lat");
+        int lngIndex = c.getColumnIndex("lng");
+        int addIndex = c.getColumnIndex("address");
+        c.moveToFirst();
+        if (c.moveToFirst()){
+            do {
+                String lat = c.getString(latIndex);
+                String lng = c.getString(lngIndex);
+                String address = c.getString(addIndex);
+                Places places = new Places(lat, lng, address);
+                data.add(places);
+            } while(c.moveToNext());
+        }
+        adapter.notifyDataSetChanged();
 
 
     }

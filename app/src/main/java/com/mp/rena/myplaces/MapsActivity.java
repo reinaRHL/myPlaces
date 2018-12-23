@@ -119,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Places place = new Places(lat, lng, address);
         MainActivity.data.add(place);
         MainActivity.adapter.notifyDataSetChanged();
+        MainActivity.db.execSQL("INSERT INTO Places (lat, lng, address) VALUES (\"test\", \"test\", \"test\")");
         Toast.makeText(getApplicationContext(), "saved!", Toast.LENGTH_SHORT).show();
     }
 
