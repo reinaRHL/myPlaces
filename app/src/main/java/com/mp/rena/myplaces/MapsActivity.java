@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 String lat = String.valueOf(latLng.latitude);
                                 String lng = String.valueOf(latLng.longitude);
                                 String address = "Not known";
-                                if (edittext.getText().toString() == ""){
+                                if (edittext.getText().toString().equals("")){
                                     address = place.getName().toString();
                                 } else {
                                     address = edittext.getText().toString();
