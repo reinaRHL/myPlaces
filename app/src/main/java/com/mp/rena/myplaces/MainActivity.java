@@ -52,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            data.clear();
-                            adapter.notifyDataSetChanged();
                             db.execSQL("DELETE FROM Place;");
+                            loadData();
                         }
                     })
                     .setNegativeButton("no", null)
