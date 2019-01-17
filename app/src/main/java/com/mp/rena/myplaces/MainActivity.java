@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             data.clear();
                             adapter.notifyDataSetChanged();
+                            db.execSQL("DELETE FROM Place;");
                         }
                     })
                     .setNegativeButton("no", null)
