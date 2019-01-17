@@ -62,9 +62,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.db.execSQL("DELETE FROM Place WHERE lat =\'" + MainActivity.data.get(position).lat + "\' and lng = \'" + MainActivity.data.get(position).lng + "\' and address = \'" + MainActivity.data.get(position).address + "\';");
-                                MainActivity.data.remove(position);
-                                MainActivity.adapter.notifyDataSetChanged();
+                                MainActivity.db.execSQL("DELETE FROM Place WHERE lat =\'" + data.get(position).lat + "\' and lng = \'" + data.get(position).lng + "\' and address = \'" + data.get(position).address + "\';");
+                                data.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("No", null)

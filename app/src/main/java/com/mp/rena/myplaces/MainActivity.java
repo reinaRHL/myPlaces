@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private RecyclerView rv;
     Button searchBtn;
-    static ArrayList<Places> data = new ArrayList<>(); // arraylist containing Places objects
-    static MyAdapter adapter;
+    private ArrayList<Places> data = new ArrayList<>(); // arraylist containing Places objects
+    private MyAdapter adapter;
     static SQLiteDatabase db;
 
     public void getCurrentLocation(){
@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadData();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -136,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration divider = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         rv.addItemDecoration(divider);
 
+        loadData();
+    }
+
+    public void loadData(){
+        data.clear();
         db = this.openOrCreateDatabase("Place", MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE if not exists Place (placeID INTEGER PRIMARY KEY, lat VARCHAR, lng VARCHAR, address VARCHAR)");
         Cursor c = db.rawQuery("SELECT * FROM Place", null);
@@ -153,7 +164,5 @@ public class MainActivity extends AppCompatActivity {
             } while(c.moveToNext());
         }
         adapter.notifyDataSetChanged();
-
-
     }
 }
